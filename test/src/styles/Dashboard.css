@@ -1,0 +1,6 @@
+.Dashboard-Container {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  background: #121212;
+  min-height: 100vh;
+}
