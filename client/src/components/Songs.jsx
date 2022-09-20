@@ -1,23 +1,44 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import '../styles/Songs.css';
+import { useOutletContext } from "react-router-dom";
+
 const Songs = (props) => {
-  const [topSongs, setTopSongs] = useState([]);
-  
-  const getTopTracks = async () => {
-    const token = props.user.token;
-    const result = await axios.get('https://api.spotify.com/v1/me/top/tracks', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    return setTopSongs(result.data.items);
+  const { top, pushToQueue, play } = useOutletContext();
+  const setQ = (e) => {
+    console.log(e.target.id)
+    pushToQueue([`${e.target.id}`]);
+    play(true);
   }
-  useEffect(() => {
-    getTopTracks();
-    
-  }, [])
+  const cards = [];
+
+  const createCard = (arg) => {
+    if (typeof arg === 'object' && arg !== null && !Array.isArray(arg)) {
+      return (
+        <div key={arg.id} className={'song-card'}>
+          <img onClick={setQ} id={arg.uri} className={'album-image'} alt={'Album Image'} src={arg.album.images[0].url} />
+          <h1 className={'song-name'}>{arg.name || arg.album.name}</h1>
+          <h3 className={'artist-name'}>{arg.artists[0].name}</h3>
+        </div>
+      )
+    }
+
+  };
+
+  if (Array.isArray(top)) {
+    for (let i = 0; i < 20; i++) {
+      cards.push(createCard(top[i]))
+    }
+
+  }
+
+
   return (
-    <div>Songs</div>
+    <div id="top-songs-section">
+      <h1>Your Top Songs</h1>
+      <div className="songs-container">
+        {cards}
+      </div>
+    </div>
   )
 }
 

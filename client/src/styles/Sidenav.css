@@ -1,19 +1,29 @@
 nav {
-  padding: 10%;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 30px;
   background-color: black;
+  min-width: 15%;
+  max-width: 15%;
+  min-height: 100%;
 }
 
 .nav-logo {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   color: white;
   font-family: 'Poppins', sans-serif;
   text-align: center;
   font-weight: 200;
+  width: 100%;
 }
 
 .spotify-nav {
+  margin-right: 10px;
   color: white;
   font-size: 2.4rem;
 }
@@ -25,15 +35,27 @@ nav {
   flex-direction: column;
   justify-content: space-between;
   font-size: 1.3rem;
-  height: 10rem;
+  height: 35vh;
 }
 
-li > a {
+li>a {
   text-decoration: none;
   color: white;
+}
+
+.link-list {
+  display: grid;
+  grid-template-columns: 1fr 7fr;
+  align-items: center;
 }
 
 .nav-icon {
   color: white;
   font-size: 1rem;
+}
+
+.nav-greeting {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  color: white;
 }

@@ -1,6 +1,15 @@
 .Dashboard-Container {
-  display: grid;
-  grid-template-columns: 1fr 5fr;
   background: #121212;
   min-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+.PlayerRSWP {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  position: fixed !important;
+  bottom: 0;
+  z-index: 1000;
+  padding: 1% 2%;
 }
