@@ -1,5 +1,9 @@
 .Dashboard-Container {
-  background: #121212;
+  background: hsla(287, 57%, 41%, 1);
+  background: linear-gradient(360deg, hsla(287, 57%, 41%, 1) 0%, hsla(190, 100%, 82%, 1) 100%);
+  background: -moz-linear-gradient(360deg, hsla(287, 57%, 41%, 1) 0%, hsla(190, 100%, 82%, 1) 100%);
+  background: -webkit-linear-gradient(360deg, hsla(287, 57%, 41%, 1) 0%, hsla(190, 100%, 82%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#8A2DA4", endColorstr="#A1EFFF", GradientType=1);
   min-height: 100vh;
   max-width: 100vw;
   overflow: hidden;

@@ -6,6 +6,7 @@ import Playlists from './components/Playlists';
 import Dashboard from './pages/Dashboard';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Songs from './components/Songs';
+import Library from './components/Library';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
@@ -14,6 +15,7 @@ root.render(
       <Route path="/timeline" element={<Dashboard />} >
         <Route path="top" element={<Songs />} />
         <Route path="playlists" element={<Playlists />} />
+        <Route path="library" element={<Library />} />
       </Route>
     </Routes>
   </BrowserRouter>
