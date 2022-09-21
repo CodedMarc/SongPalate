@@ -8,11 +8,14 @@ const cors = require('cors');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const app = express();
 const PORT = process.env.PORT || 3001;
+const path = require('path');
 
 const client_id = process.env.client_id;
 const client_secret = process.env.client_secret;
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors());
 app.use(sessions({
   secret: 'shh',
@@ -57,7 +60,7 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect('http://localhost:3000/timeline/top');
+    res.redirect('http://localhost:3001/timeline/top');
   }
 );
 
@@ -65,6 +68,11 @@ app.get('/spuser', (req, res) => {
   console.log('pinged for ', app.locals.spuser);
   return res.json(app.locals.spuser);
 })
+
+app.get('*', (req, res) => {
+  console.log('Landed on page');
+  res.sendFile(path.join(__dirname, '../client/build/'));
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on Port ${PORT}`);
