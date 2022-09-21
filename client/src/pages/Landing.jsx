@@ -1,10 +1,7 @@
 import '../styles/Landing.css';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+
 function Landing() {
-  // const spotifyLogin = () => {
-  //   axios.get('http://localhost:3001/auth/spotify');
-  // }
+
   return (
     <main className="Landing">
       <h1 className="title">Song Palate</h1>

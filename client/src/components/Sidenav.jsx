@@ -24,7 +24,7 @@ const Sidenav = (props) => {
         <li className="link-list"><i className="fa-solid fa-music nav-icon"></i><Link className="nav-link" to="top">Top Songs</Link></li>
         <li className="link-list"><i className="fa-solid fa-layer-group nav-icon"></i><Link className="nav-link" to="library">Library</Link></li>
         <li className="link-list"><i className="fa-solid fa-headphones nav-icon"></i><Link className="nav-link" to="playlists">Playlists</Link></li>
-        <li className="link-list"><i className="fa-solid fa-magnifying-glass nav-icon"></i><Link className="nav-link" to="playlists">Search</Link></li>
+        {/* <li className="link-list"><i className="fa-solid fa-magnifying-glass nav-icon"></i><Link className="nav-link" to="playlists">Search</Link></li> */}
         <li className="link-list"><i className="fa-solid fa-door-open nav-icon"></i><Link className="nav-link" to="/">Logout</Link></li>
       </ul>
     </nav>
