@@ -13,13 +13,10 @@
   display: grid;
   overflow: hidden;
   max-width: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 25px;
 }
 
-.song-card {
-  text-align: center;
-}
 
 @media screen and (max-width: 1000px) {
   #playlists-section {
