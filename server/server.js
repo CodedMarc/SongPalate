@@ -47,9 +47,6 @@ passport.use(
   )
 );
 
-app.get('/', (req, res) => {
-  return res.redirect('http://localhost:3000/');
-})
 app.get('/auth/spotify', passport.authenticate('spotify',
   {
     scope: ['streaming', 'user-read-email', 'user-read-private', 'user-library-read', 'user-library-modify', 'user-read-recently-played', 'user-top-read', 'playlist-read-private', 'playlist-modify-private', 'playlist-modify-public', 'user-modify-playback-state', 'user-read-playback-state'],
