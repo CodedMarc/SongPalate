@@ -110,7 +110,9 @@ const Dashboard = () => {
   )
     :
     (
-      <h1>loading...</h1>
+      <div className="Dashboard-Container">
+        <h1 className="loading">loading...</h1>
+      </div>
     )
 }
 
