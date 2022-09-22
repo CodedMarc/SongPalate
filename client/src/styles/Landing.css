@@ -5,7 +5,8 @@
   align-items: center;
   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
-  padding: 5% 15%;
+  width: 100vw;
+  padding: 5% 10%;
   background: #121212;
 }
 .center {
@@ -24,11 +25,18 @@
 }
 .fa-spotify {
   color: green;
+  font-size: 2rem;
+  margin-right: 10px;
 }
 .spotify-btn {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
   padding: 1em;
   font-size: 1rem;
-  border-radius: 25px;
+  border-radius: 50px;
   border: none;
   background-color: #212121;
   color: white;
