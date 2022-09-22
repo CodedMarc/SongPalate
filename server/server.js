@@ -57,7 +57,7 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect('http://localhost:3001/timeline/top');
+    res.redirect('https://songpalate.herokuapp.com/timeline/top');
   }
 );
 

@@ -54,7 +54,7 @@ const Dashboard = () => {
   }
   // ON COMPONENT MOUNT, GET
   useEffect(() => {
-    axios.get('http://localhost:3001/spuser')
+    axios.get('/spuser')
       .then(response => {
         setUser(response.data)
         console.log(response.data)
