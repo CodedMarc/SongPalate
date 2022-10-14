@@ -39,7 +39,12 @@ passport.use(
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
       User.findOrCreate({ spotifyId: profile.id, token: accessToken, spotify: profile }, function (err, user) {
-        app.locals.spuser = user;
+        const options = {
+          maxAge: 1000 * 60 * 15,
+          httpOnly: true,
+          signed: true
+        }
+        res.cookie('nom', accessToken, options)
         return done(err, user);
       });
     }
@@ -64,9 +69,16 @@ app.get(
   }
 );
 
-app.get('/spuser', (req, res) => {
-  console.log('pinged for ', app.locals.spuser);
-  return res.json(app.locals.spuser);
+app.get('/spotifylog', (req, res) => {
+  const nom = req.signedCookies['nom'];
+  User.find({token: nom}, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.json({err: 'uh...error'})
+    } else {
+      return res.json(user);
+    }
+  });
 })
 
 // app.get('*', (req, res) => {
