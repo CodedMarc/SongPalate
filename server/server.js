@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 const path = require('path');
 const client_id = process.env.client_id;
 const client_secret = process.env.client_secret;
-const hostURL = '';
+
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(express.json());
 // app.use(express.static(path.join(__dirname, '../client/build')));
@@ -58,7 +58,7 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect(`${hostURL}/timeline/top`);
+    res.redirect(`https://songpalate.netlify.app/timeline/top`);
     // res.redirect('https://songpalate.herokuapp.com/timeline/top');
   }
 );
