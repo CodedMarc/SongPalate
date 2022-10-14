@@ -33,7 +33,7 @@ const Dashboard = () => {
   const getCurrentUser = async () => {
     if (gotUser) return;
     setGotUser(true);
-    const result = await axios.get('http://songpalate.herokuapp.com/spuser')
+    const result = await axios.get('https://songpalate.herokuapp.com/spotifylog')
     // console.log('User Object', result.data);
     setToken(result.data.token);
     return setUser(result.data);

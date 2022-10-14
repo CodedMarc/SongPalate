@@ -39,7 +39,7 @@ passport.use(
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
       User.findOrCreate({ spotifyId: profile.id, token: accessToken, spotify: profile }, function (err, user) {
-        app.locals.spuser = user;
+        
         return done(err, user);
       });
     }
@@ -63,10 +63,7 @@ app.get(
   }
 );
 
-app.get('/spuser', (req, res) => {
-  console.log('pinged for ', app.locals.spuser);
-  return res.json(app.locals.spuser);
-})
+
 
 // app.get('*', (req, res) => {
 //   console.log('Landed on page');
