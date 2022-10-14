@@ -95,7 +95,7 @@ const Dashboard = () => {
       <Sidenav user={user} />
       <Outlet context={{ top: topSongs.items, pushToQueue: setQueue, play: setPlaySong, playlists: playlists, token: token, library: library, setLibrary: setLibrary, totalSongs: totalSongs }} />
       {/* <Outlet top={topSongs.items} pushToQueue={setQueue} play={setPlaySong} /> */}
-      <SpotifyPlayer play={playSong} showSaveIcon={true} magnifySliderOnHover={true} token={user.token} uris={queue} styles={PlayerStyles} />
+      <SpotifyPlayer play={playSong} showSaveIcon={true} magnifySliderOnHover={true} token={token} uris={queue} styles={PlayerStyles} />
 
     </div>
   )
