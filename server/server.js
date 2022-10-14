@@ -87,11 +87,13 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 })
 
-app.get('/spotifylog', (req, res) => {
-  if (req.user) {
-    return res.json(req.user);
-  }
-  return res.json({MessageFromMarc: 'no.'});
+app.get('/spotifylog', passport.authenticate('spotify', { failureRedirect: '/' }),
+  ensureAuthenticated,
+  (req, res) => {
+    if (req.user) {
+      return res.json(req.user);
+    }
+    return res.json({MessageFromMarc: 'no.'});
 })
 
 // app.get('*', (req, res) => {
