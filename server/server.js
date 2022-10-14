@@ -16,12 +16,8 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use(express.json());
 // app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors());
-app.use(sessions({
-  secret: 'shh',
-  resave: true,
-  saveUninitialized: true,
-  cookie: { secure: true },
-}));
+
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -39,11 +35,21 @@ passport.use(
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
       User.findOrCreate({ spotifyId: profile.id, token: accessToken, spotify: profile }, function (err, user) {
-        return done(err, user);
+        app.locals.tempUserVar = user;
+        return done(null, user);
       });
     }
-  )
-);
+    ));
+    
+app.use(sessions({
+  secret: 'nom',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: true },
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
   return res.redirect('https://songpalate.netlify.app/')
@@ -57,28 +63,16 @@ app.get('/auth/spotify', passport.authenticate('spotify',
 app.get(
   '/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
+  ensureAuthenticated,
   function (req, res) {
-    const options = {
-      maxAge: 1000 * 60 * 15,
-      httpOnly: true,
-      signed: true
-    }
-    res.cookie('nom', accessToken, options)
+
     // Successful authentication, redirect home.
     return res.redirect('https://songpalate.netlify.app/timeline/top');
   }
 );
 
 app.get('/spotifylog', (req, res) => {
-  const nom = req.signedCookies['nom'];
-  User.find({token: nom}, (err, user) => {
-    if (err) {
-      console.log(err);
-      return res.json({err: 'uh...error'})
-    } else {
-      return res.json(user);
-    }
-  });
+  return res.json(app.locals.tempUserVar);
 })
 
 // app.get('*', (req, res) => {
@@ -89,3 +83,10 @@ app.get('/spotifylog', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Listening on Port ${PORT}`);
 })
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/');
+}
