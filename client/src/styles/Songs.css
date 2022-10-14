@@ -1,5 +1,5 @@
 #top-songs-section {
-  padding: 2% 0% 5% 15%;
+  padding: 4% 0% 5% 15%;
   text-align: center;
   min-height: 25%;
   max-height: 45%;
@@ -36,12 +36,25 @@
   padding: 15px;
   color: white;
   box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .song-name .artist-name {
   text-align: center;
 }
-
+.img-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.play-icon {
+  opacity: 0.65;
+  color: white;
+  position: absolute;
+  font-size: 4rem;
+}
 .you-are-here {
   font-weight: 900;
   font-size: 2.5rem;

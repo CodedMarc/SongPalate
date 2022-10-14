@@ -1,5 +1,5 @@
 #Library-Section {
-  padding: 2% 5% 10% 20%;
+  padding: 4% 5% 10% 20%;
   text-align: center;
   min-height: 25%;
   max-height: 45%;
@@ -12,7 +12,6 @@
   background-color: rgba(255, 255, 255, 0.5);
   width: 100%;
   min-height: 100%;
-  padding: 1%;
   display: flex;
   flex-direction: column;
 }
@@ -23,6 +22,8 @@
   justify-items: center;
   align-items: center;
   margin: 5px 0px;
+  padding: 10px 0px;
+  border-bottom: 1px solid black;
 }
 
 .library-image {
@@ -44,6 +45,65 @@
   color: black;
 }
 
+.filter-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 50px;
+}
+.search-icon {
+  margin-left: 10px;
+  color: white;
+  cursor: pointer;
+}
+.search-icon:hover {
+  color: black;
+  transition: 0.7s ease;
+}
+.search-filter {
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.search-input {
+  box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.3);
+  padding: 0.5em 1em;
+  width: 100%;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Montserrat', sans-serif;
+}
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.filter-button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  color: black;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.filter-button:hover {
+  color: white;
+  transition: 0.7s ease;
+}
+.middle-filter-button {
+  margin: 0px 20px;
+}
+.active-filter {
+  padding: 0.4em 1em;
+  text-decoration: none;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.6);
+  color: black;
+  box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.3);
+}
 @media screen and (max-width: 1000px) {
   #Library-Section {
     padding: 10% 5% 25% 5%;
@@ -52,5 +112,20 @@
   .library-image {
     width: 50px;
     height: 50px;
+  }
+
+  .filter-container {
+    flex-direction: column;
+  }
+  .search-filter {
+    width: 100%;
+  }
+  .buttons-container {
+    margin: 10px 0px;
+    display: flex;
+    align-self: flex-start;
+  }
+  .filter-button {
+    font-size: 0.8rem;
   }
 }

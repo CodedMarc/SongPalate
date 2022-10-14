@@ -1,5 +1,5 @@
 #playlists-section {
-  padding: 2% 0 2% 15%;
+  padding: 2% 0 10% 15%;
   text-align: center;
   min-height: 25%;
   max-height: 45%;
@@ -15,6 +15,13 @@
   max-width: 100%;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 25px;
+}
+.playlist-card {
+  min-width: 330px;
+  padding: 15px;
+  color: white;
+  box-shadow: 2px 5px 5px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 

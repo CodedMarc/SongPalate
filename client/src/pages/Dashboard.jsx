@@ -16,95 +16,86 @@ const Dashboard = () => {
     trackArtistColor: 'black',
     trackNameColor: 'black'
   };
-  const [library, setLibrary] = useState({});
+  const [library, setLibrary] = useState([]);
   const [playlists, setPlaylists] = useState({});
   const [gotLibrary, setGotLibrary] = useState(false);
   const [gotSongs, setGotSongs] = useState(false)
+  const [gotUser, setGotUser] = useState(false)
   const [gotPlaylists, setGotPlaylists] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState({});
+  const [token, setToken] = useState(false);
   const [topSongs, setTopSongs] = useState([]);
-
   const [playSong, setPlaySong] = useState(false);
   const [queue, setQueue] = useState([]);
-
-  // recursively call to get spotify library
-  const getMusicLibrary = async (token, count = 50, current = 0, total = 1, items = [], page = 0) => {
-    // base case: if current is equal to total, setLibrary
-    if (current >= total) {
-      setLibrary(items)
-      return setGotLibrary(true);
-    }
-    // recursive case:
-    // check if total is less than count
-    // if less, set count equal to total
-    // else, call api and push result.data.items into items array
-    // if total is more than current count, call function again
-    const result = await axios.get(`https://api.spotify.com/v1/me/tracks?limit=${count}&offset=${page}`, {
+  const [totalSongs, setTotalSongs] = useState(0);
+  // get current user
+  const getCurrentUser = async () => {
+    if (gotUser) return;
+    setGotUser(true);
+    const result = await axios.get('http://songpalate.herokuapp.com/spuser')
+    // console.log('User Object', result.data);
+    setToken(result.data.token);
+    return setUser(result.data);
+  }
+  // get top songs
+  const getTopSongs = async () => {
+    if (gotSongs || !token) return;
+    setGotSongs(true);
+    const result = await axios.get('https://api.spotify.com/v1/me/top/tracks?limit=50', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    const newTotal = result.data.total - 1;
-    items.push(...result.data.items);
-    const newCurrent = current + result.data.items.length;
-    const newPage = page + count - 1;
-    console.log(`recurse ${page}`, items)
-    return getMusicLibrary(token, count, newCurrent, newTotal, items, newPage)
+    // console.log('Top Songs Object', result.data);
+    return setTopSongs(result.data);
+    
+  }
+  // get playlists
+  const getPlaylists = async () => {
+    if (gotPlaylists || !token) return;
+    setGotPlaylists(true);
+    const result = await axios.get('https://api.spotify.com/v1/me/playlists', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    // console.log('Playlists Object', result.data)
+    return setPlaylists(result.data);
+  }
+  // get spotify library
+  const getMusicLibrary = async (count = 50) => {
+    if (gotLibrary || !token) return;
+    setGotLibrary(true);
+    const result = await axios.get(`https://api.spotify.com/v1/me/tracks?limit=${count}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    setTotalSongs(result.data.total);
+    // console.log('Library Object', result.data)
+    return setLibrary(result.data.items);
+  }
+  // set loaded true
+  const isLoaded = () => {
+    if (gotUser && gotPlaylists && gotLibrary && gotSongs) return setLoaded(true);
+    return;
   }
   // ON COMPONENT MOUNT, GET
   useEffect(() => {
-    axios.get('/spuser')
-      .then(response => {
-        setUser(response.data)
-        console.log(response.data)
-        return response.data;
-        // ACCESS TOKEN HERE
-      }).then(result => {
-        // GET TOP SONGS
-        if (!gotSongs) {
-          axios.get('https://api.spotify.com/v1/me/top/tracks', {
-            headers: {
-              'Authorization': `Bearer ${result.token}`
-            }
-          })
-            .then(result2 => {
-              console.log('FIRED')
-              setGotSongs(true);
-              return setTopSongs(result2.data)
-            })
-        }
-        if (!gotPlaylists) {
-          // GET PLAYLISTS
-          axios.get('https://api.spotify.com/v1/me/playlists', {
-            headers: {
-              'Authorization': `Bearer ${result.token}`
-            }
-          }).then(data => {
-            console.log('PLAYLISTS', data.data)
-            setGotPlaylists(true);
-            return setPlaylists(data.data);
-          })
-
-        }
-        // GET SPOTIFY LIBRARY
-        if (!gotLibrary) {
-          return getMusicLibrary(result.token)
-        }
-
-      })
-      .then(result3 => {
-        return setLoaded(true);
-      })
-
-  }, [])
+    if (!gotUser) getCurrentUser();
+    if (!gotSongs) getTopSongs();
+    if (!gotPlaylists) getPlaylists();
+    if (!gotLibrary) getMusicLibrary();
+    isLoaded();
+  }, [user, gotSongs, gotPlaylists, gotLibrary])
 
   return loaded ? (
     <div className="Dashboard-Container">
       <Sidenav user={user} />
-      <Outlet context={{ top: topSongs.items, pushToQueue: setQueue, play: setPlaySong, playlists: playlists, token: user.token, library: library }} />
+      <Outlet context={{ top: topSongs.items, pushToQueue: setQueue, play: setPlaySong, playlists: playlists, token: token, library: library, setLibrary: setLibrary, totalSongs: totalSongs }} />
       {/* <Outlet top={topSongs.items} pushToQueue={setQueue} play={setPlaySong} /> */}
-      <SpotifyPlayer play={playSong} showSaveIcon={true} magnifySliderOnHover={true} autoPlay={true} token={user.token} uris={queue} styles={PlayerStyles} />
+      <SpotifyPlayer play={playSong} showSaveIcon={true} magnifySliderOnHover={true} token={user.token} uris={queue} styles={PlayerStyles} />
 
     </div>
   )

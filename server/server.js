@@ -9,13 +9,12 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 const app = express();
 const PORT = process.env.PORT || 3001;
 const path = require('path');
-
 const client_id = process.env.client_id;
 const client_secret = process.env.client_secret;
-
+const hostURL = '';
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../client/build')));
+// app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(cors());
 app.use(sessions({
   secret: 'shh',
@@ -47,6 +46,8 @@ passport.use(
   )
 );
 
+
+
 app.get('/auth/spotify', passport.authenticate('spotify',
   {
     scope: ['streaming', 'user-read-email', 'user-read-private', 'user-library-read', 'user-library-modify', 'user-read-recently-played', 'user-top-read', 'playlist-read-private', 'playlist-modify-private', 'playlist-modify-public', 'user-modify-playback-state', 'user-read-playback-state'],
@@ -57,7 +58,8 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect('https://songpalate.herokuapp.com/timeline/top');
+    res.redirect(`${hostURL}/timeline/top`);
+    // res.redirect('https://songpalate.herokuapp.com/timeline/top');
   }
 );
 
@@ -66,10 +68,10 @@ app.get('/spuser', (req, res) => {
   return res.json(app.locals.spuser);
 })
 
-app.get('*', (req, res) => {
-  console.log('Landed on page');
-  res.sendFile(path.join(__dirname, '../client/build/'));
-});
+// app.get('*', (req, res) => {
+//   console.log('Landed on page');
+//   res.sendFile(path.join(__dirname, '../client/build/'));
+// });
 
 app.listen(PORT, () => {
   console.log(`Listening on Port ${PORT}`);
