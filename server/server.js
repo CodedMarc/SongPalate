@@ -39,12 +39,6 @@ passport.use(
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
       User.findOrCreate({ spotifyId: profile.id, token: accessToken, spotify: profile }, function (err, user) {
-        const options = {
-          maxAge: 1000 * 60 * 15,
-          httpOnly: true,
-          signed: true
-        }
-        res.cookie('nom', accessToken, options)
         return done(err, user);
       });
     }
@@ -64,8 +58,14 @@ app.get(
   '/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
   function (req, res) {
+    const options = {
+      maxAge: 1000 * 60 * 15,
+      httpOnly: true,
+      signed: true
+    }
+    res.cookie('nom', accessToken, options)
     // Successful authentication, redirect home.
-    res.redirect('https://songpalate.netlify.app/timeline/top');
+    return res.redirect('https://songpalate.netlify.app/timeline/top');
   }
 );
 
