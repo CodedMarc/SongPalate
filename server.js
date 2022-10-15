@@ -73,7 +73,7 @@ app.use(sessions({
   secret: process.env.COOKIE_SECRET,
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: true, sameSite: true},
+  cookie: { secure: true, sameSite: 'none'},
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -97,8 +97,8 @@ app.get(
     });
     console.log('redirecting', req.user._id)
     // Successful authentication, redirect home.
-    return res.redirect(`/timeline/top`);
-    // res.redirect('https://songpalate.herokuapp.com/timeline/top');
+    // return res.redirect(`/timeline/top`);
+    return res.redirect('https://songpalate.herokuapp.com/timeline/top');
   }
 );
 
