@@ -77,7 +77,7 @@ app.use(sessions({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
 app.get('/auth/spotify', passport.authenticate('spotify',
   {
@@ -112,7 +112,7 @@ app.get('/spotifylog', (req, res) => {
 
 app.get('*', (req, res) => {
   console.log('Landed on page');
-  res.sendFile(path.join(__dirname, '../client/build/'));
+  res.sendFile(path.join(__dirname, '/client/build/'));
 });
 
 app.listen(PORT, () => {
