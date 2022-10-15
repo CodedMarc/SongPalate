@@ -1,6 +1,7 @@
 require('dotenv').config();
 const User = require('./UserSchema');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser')
 const express = require('express');
 const sessions = require('express-session');
 const passport = require('passport');
@@ -13,15 +14,8 @@ const client_id = process.env.client_id;
 const client_secret = process.env.client_secret;
 const hostURL = '';
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-app.use(express.json());
-// app.use(express.static(path.join(__dirname, '../client/build')));
-app.use(cors());
-app.use(sessions({
-  secret: 'shh',
-  resave: true,
-  saveUninitialized: true,
-  cookie: { secure: true },
-}));
+
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -38,15 +32,52 @@ passport.use(
       callbackURL: '/callback'
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
-      User.findOrCreate({ spotifyId: profile.id, token: accessToken, spotify: profile }, function (err, user) {
-        
-        return done(err, user);
+      // profile.token = accessToken;
+      // profile.refresh = refreshToken;
+      // profile.expires = expires_in;
+
+      // return done(null, profile);
+      const newUser = {
+        spotifyId: profile.id,
+        token: accessToken,
+        username: profile.username,
+        email: profile.emails[0].value,
+        spotify: refreshToken
+      }
+      User.findOne({ spotifyId: profile.id }, function (err, user) {
+        if (user) {
+          if (user.token !== accessToken) {
+            User.findOneAndUpdate({spotifyId: user.spotifyId, token: user.token}, {token: accessToken}, (err, updated) => {
+              return done(null, updated);
+            })
+          }
+          return done(null, user);
+        }
+        else {
+          User.create(newUser, (err, createdUser) => {
+            return done(null, createdUser);
+          })
+        }
       });
     }
   )
 );
-
-
+app.use(express.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cors({
+  origin: 'https://songpalate.herokuapp.com',
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+}));
+app.use(sessions({
+  secret: process.env.COOKIE_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: true, sameSite: true},
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/auth/spotify', passport.authenticate('spotify',
   {
@@ -56,20 +87,41 @@ app.get('/auth/spotify', passport.authenticate('spotify',
 app.get(
   '/callback',
   passport.authenticate('spotify', { failureRedirect: '/' }),
+  ensureAuthenticated,
   function (req, res) {
+    res.cookie('nomnom', req.user._id, {
+      expires: new Date(Date.now() + (1000 * 60 * 60 * 24 * 365)),
+      signed: true,
+      httpOnly: true,
+      secure: true
+    });
+    console.log('redirecting', req.user._id)
     // Successful authentication, redirect home.
-    res.redirect(`${hostURL}/timeline/top`);
+    return res.redirect(`/timeline/top`);
     // res.redirect('https://songpalate.herokuapp.com/timeline/top');
   }
 );
 
+app.get('/spotifylog', (req, res) => {
+  const magicId = req.signedCookies['nomnom'];
+  User.findOne({_id: magicId}, (err, user) => {
+    return res.json(user);
+  })
+})
 
 
-// app.get('*', (req, res) => {
-//   console.log('Landed on page');
-//   res.sendFile(path.join(__dirname, '../client/build/'));
-// });
+app.get('*', (req, res) => {
+  console.log('Landed on page');
+  res.sendFile(path.join(__dirname, '../client/build/'));
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on Port ${PORT}`);
 })
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/');
+}

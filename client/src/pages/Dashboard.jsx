@@ -33,7 +33,7 @@ const Dashboard = () => {
   const getCurrentUser = async () => {
     if (gotUser) return;
     setGotUser(true);
-    const result = await axios.get('https://songpalate.herokuapp.com/spotifylog', {withCredentials: true});
+    const result = await axios.get('/spotifylog', {withCredentials: true});
     console.log(result);
     // console.log('User Object', result.data);
     setToken(result.data.token);
@@ -102,9 +102,20 @@ const Dashboard = () => {
   )
     :
     (
-      <div className="Dashboard-Container">
-        <h1 className="loading">loading...</h1>
-      </div>
+    <div className="Dashboard-Container">
+      <div class="loadingContainer">
+        <h1 className="loading">Loading</h1>
+        <div className="balls">
+          <div class="ball1"></div>
+          <div class="ball2"></div>
+          <div class="ball3"></div>
+        </div>
+      </div>  
+    </div>
+
+      // <div className="Dashboard-Container">
+      //   <h1 className="loading">loading...</h1>
+      // </div>
     )
 }
 
