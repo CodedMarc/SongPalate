@@ -29,7 +29,7 @@ passport.use(
     {
       clientID: client_id,
       clientSecret: client_secret,
-      callbackURL: '/callback'
+      callbackURL: 'https://songpalate.herokuapp.com/callback'
     },
     function (accessToken, refreshToken, expires_in, profile, done) {
       // profile.token = accessToken;
