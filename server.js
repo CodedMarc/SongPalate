@@ -64,11 +64,7 @@ passport.use(
 );
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(cors({
-  origin: 'https://songpalate.herokuapp.com',
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-}));
+app.use(cors());
 app.use(sessions({
   secret: process.env.COOKIE_SECRET,
   resave: true,
