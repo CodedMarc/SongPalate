@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   token: String,
-  spotify: Object,
+  refresh: String,
+  profile: Object,
   spotifyId: String,
   created_at: {type: Date, default: Date.now}
 })

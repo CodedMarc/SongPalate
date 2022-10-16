@@ -38,11 +38,13 @@ passport.use(
 
       // return done(null, profile);
       const newUser = {
+        name: profile.displayName,
         spotifyId: profile.id,
+        profile: profile,
         token: accessToken,
         username: profile.username,
         email: profile.emails[0].value,
-        spotify: refreshToken
+        refresh: refreshToken
       }
       User.findOne({ spotifyId: profile.id }, function (err, user) {
         if (user) {
