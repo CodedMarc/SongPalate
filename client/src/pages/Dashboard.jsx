@@ -33,7 +33,7 @@ const Dashboard = () => {
   const getCurrentUser = async () => {
     if (gotUser) return;
     setGotUser(true);
-    const result = await axios.get('http://localhost:3001/spotifylog', {withCredentials: true});
+    const result = await axios.get('/spotifylog', {withCredentials: true});
     console.log(result);
     // console.log('User Object', result.data);
     setToken(result.data.token);
