@@ -100,7 +100,9 @@ const Library = () => {
         <img id={arg.track.uri} className={'library-image'} alt={'Cover Art'} src={arg.track.album.images[0].url} />
         <h1 className={'library-song-name library-text'}>{arg.track.name || arg.track.album.name}</h1>
         <h3 className={'library-artist-name library-text'}>{arg.track.artists[0].name}</h3>
-        <i id={arg.track.uri} onClick={setQ} className="fa-solid fa-play play-library"></i>
+        <div id={arg.track.uri} onClick={setQ} className="play-button">
+          <i className="fa-solid fa-play play-library"></i>
+        </div>
         <p className="library-time">{`${Math.floor(arg.track.duration_ms / 60000)}:${((arg.track.duration_ms % 60000) / 1000).toFixed(0) < 10 ? '0' : ''}${((arg.track.duration_ms % 60000) / 1000).toFixed(0)}`}</p>
       </li>
     ))}
@@ -110,7 +112,9 @@ const Library = () => {
           <img id={arg.track.uri} className={'library-image'} alt={'Cover Art'} src={arg.track.album.images[0].url} />
           <h1 className={'library-song-name library-text'}>{arg.track.name || arg.track.album.name}</h1>
           <h3 className={'library-artist-name library-text'}>{arg.track.artists[0].name}</h3>
-          <i id={arg.track.uri} onClick={setQ} className="fa-solid fa-play play-library"></i>
+          <div id={arg.track.uri} onClick={setQ} className="play-button">
+            <i className="fa-solid fa-play play-library"></i>
+          </div>
           <p className="library-time">{`${Math.floor(arg.track.duration_ms / 60000)}:${((arg.track.duration_ms % 60000) / 1000).toFixed(0) < 10 ? '0' : ''}${((arg.track.duration_ms % 60000) / 1000).toFixed(0)}`}</p>
         </li>
       ))  
@@ -121,7 +125,9 @@ const Library = () => {
           <img id={arg.track.uri} className={'library-image'} alt={'Cover Art'} src={arg.track.album.images[0].url} />
           <h1 className={'library-song-name library-text'}>{arg.track.name || arg.track.album.name}</h1>
           <h3 className={'library-artist-name library-text'}>{arg.track.artists[0].name}</h3>
-          <i id={arg.track.uri} onClick={setQ} className="fa-solid fa-play play-library"></i>
+          <div id={arg.track.uri} onClick={setQ} className="play-button">
+            <i className="fa-solid fa-play play-library"></i>
+          </div>
           <p className="library-time">{`${Math.floor(arg.track.duration_ms / 60000)}:${((arg.track.duration_ms % 60000) / 1000).toFixed(0) < 10 ? '0' : ''}${((arg.track.duration_ms % 60000) / 1000).toFixed(0)}`}</p>
         </li>
       ))  
@@ -132,7 +138,8 @@ const Library = () => {
 
   // Pushes to Queue
   const setQ = (e) => {
-    pushToQueue(e.target.id);
+    pushToQueue([`${e.currentTarget.id}`]);
+    play(false);
     play(true);
   }
 

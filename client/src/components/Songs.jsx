@@ -8,7 +8,8 @@ const Songs = (props) => {
     // console.log(e.currentTarget)
     // console.log(e.currentTarget.id)
     pushToQueue([`${e.currentTarget.id}`]);
-    play(true);
+    play(false);
+    return play(true);
   }
   const cards = [];
 
