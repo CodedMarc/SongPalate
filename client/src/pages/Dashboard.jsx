@@ -9,10 +9,10 @@ const Dashboard = () => {
   // Spotify Player Styling
   const PlayerStyles = {
     activeColor: 'red',
-    bgColor: 'white',
+    bgColor: 'whitesmoke',
     color: 'black',
-    loaderColor: 'white',
-    sliderColor: 'black',
+    loaderColor: 'red',
+    sliderColor: 'hsla(190, 100%, 82%, 1)',
     trackArtistColor: 'black',
     trackNameColor: 'black'
   };
@@ -33,7 +33,7 @@ const Dashboard = () => {
   const getCurrentUser = async () => {
     if (gotUser) return;
     setGotUser(true);
-    const result = await axios.get('/spotifylog', {withCredentials: true});
+    const result = await axios.get('http://localhost:3001/spotifylog', {withCredentials: true});
     console.log(result);
     // console.log('User Object', result.data);
     setToken(result.data.token);
@@ -95,20 +95,19 @@ const Dashboard = () => {
     <div className="Dashboard-Container">
       <Sidenav user={user} />
       <Outlet context={{ top: topSongs.items, pushToQueue: setQueue, play: setPlaySong, playlists: playlists, token: token, library: library, setLibrary: setLibrary, totalSongs: totalSongs }} />
-      {/* <Outlet top={topSongs.items} pushToQueue={setQueue} play={setPlaySong} /> */}
-      <SpotifyPlayer play={playSong} showSaveIcon={true} magnifySliderOnHover={true} token={token} uris={queue} styles={PlayerStyles} />
+      <SpotifyPlayer play={playSong} name={'Song Palate'} syncExternalDevice={true} syncExternalDeviceInterval={1.25} initialVolume={0.25} showSaveIcon={true} magnifySliderOnHover={true} token={token} uris={queue} styles={PlayerStyles} />
 
     </div>
   )
     :
     (
     <div className="Dashboard-Container">
-      <div class="loadingContainer">
+      <div className="loadingContainer">
         <h1 className="loading">Loading</h1>
         <div className="balls">
-          <div class="ball1"></div>
-          <div class="ball2"></div>
-          <div class="ball3"></div>
+          <div className="ball1"></div>
+          <div className="ball2"></div>
+          <div className="ball3"></div>
         </div>
       </div>  
     </div>

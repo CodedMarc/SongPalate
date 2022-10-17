@@ -66,7 +66,11 @@ passport.use(
 );
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(cors());
+app.use(cors({
+  origin: 'https://songpalate.herokuapp.com',
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+}));
 app.use(sessions({
   secret: process.env.COOKIE_SECRET,
   resave: true,
@@ -93,10 +97,10 @@ app.get(
       httpOnly: true,
       secure: true
     });
-    console.log('redirecting', req.user._id)
+    console.log('redirecting', req.user.name)
     // Successful authentication, redirect home.
     // return res.redirect(`/timeline/top`);
-    return res.redirect('https://songpalate.herokuapp.com/timeline/top');
+    return res.redirect('https://songpalate.herokuapp.com/timeline/library');
   }
 );
 
@@ -106,7 +110,6 @@ app.get('/spotifylog', (req, res) => {
     return res.json(user);
   })
 })
-
 
 app.get('*', (req, res) => {
   console.log('Landed on page');

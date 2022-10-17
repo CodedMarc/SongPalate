@@ -9,7 +9,9 @@ const Sidenav = (props) => {
   const toggleHandler = () => {
     return toggle ? setToggle(false) : setToggle(true);
   }
-
+  const closeNav = () => {
+    return toggle ? setToggle(false) : null;
+  }
   // const [user, setUser] = useState(props.user.then(result => { console.log(result); return result }));
   return (
     <nav id="nav" className={toggle ? `slide-in` : null}>
@@ -21,11 +23,11 @@ const Sidenav = (props) => {
       <h1 className="nav-logo"><span className="fa-brands fa-spotify spotify-nav"></span> Song Palate</h1>
       <ul className="links-container">
         <h2 className="nav-greeting">Hello, {props.user.hasOwnProperty('name') ? props.user.name : 'User'}</h2>
-        <li onClick={toggleHandler} className="link-list"><i className="fa-solid fa-music nav-icon"></i><Link className="nav-link" to="top">Top Songs</Link></li>
-        <li onClick={toggleHandler} className="link-list"><i className="fa-solid fa-layer-group nav-icon"></i><Link className="nav-link" to="library">Library</Link></li>
-        <li onClick={toggleHandler} className="link-list"><i className="fa-solid fa-headphones nav-icon"></i><Link className="nav-link" to="playlists">Playlists</Link></li>
-        {/* onClick={toggleHandler} <li className="link-list"><i className="fa-solid fa-magnifying-glass nav-icon"></i><Link className="nav-link" to="playlists">Search</Link></li> */}
-        <li onClick={toggleHandler} className="link-list"><i className="fa-solid fa-door-open nav-icon"></i><Link className="nav-link" to="/">Logout</Link></li>
+        <li onClick={closeNav} className="link-list"><i className="fa-solid fa-music nav-icon"></i><Link className="nav-link" to="top">Top Songs</Link></li>
+        <li onClick={closeNav} className="link-list"><i className="fa-solid fa-layer-group nav-icon"></i><Link className="nav-link" to="library">Library</Link></li>
+        <li onClick={closeNav} className="link-list"><i className="fa-solid fa-headphones nav-icon"></i><Link className="nav-link" to="playlists">Playlists</Link></li>
+        <li onClick={closeNav} className="link-list"><i className="fa-solid fa-magnifying-glass nav-icon"></i><Link className="nav-link" to="search">Search</Link></li>
+        <li onClick={closeNav} className="link-list"><i className="fa-solid fa-door-open nav-icon"></i><a className="nav-link" href="/">Logout</a></li>
       </ul>
     </nav>
   )
